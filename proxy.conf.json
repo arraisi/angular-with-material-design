@@ -1,0 +1,11 @@
+{
+  "/paques-api": {
+    "target": "cloud.paques.dev",
+    "secure": false
+  },
+  "/example-api": {
+    "target": "http://localhost:8080",
+    "secure": false
+  }
+}
+

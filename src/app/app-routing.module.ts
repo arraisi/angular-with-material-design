@@ -20,6 +20,10 @@ const routes: Routes = [
 				loadChildren: () => import('app/views/pages/dashboard/dashboard.module').then(m => m.DashboardModule)
 			},
 			{
+				path: 'cms',
+				loadChildren: () => import('../app/views/pages/cms/cms.module').then(m => m.CMSModule)
+			},
+			{
 				path: 'mail',
 				loadChildren: () => import('app/views/pages/apps/mail/mail.module').then(m => m.MailModule)
 			},

@@ -5,15 +5,15 @@
 
 		<ng-container ktPortletTitle>
 			<h3 class="kt-portlet__head-title">
-				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">Customers list</span>
+				<span translate="ECOMMERCE.CUSTOMERS.CUSTOMERS_LIST">Solution list</span>
 			</h3>
 			<!-- For localisations we use @ngx-translate | See off. documentations => https://github.com/ngx-translate/core -->
 			<!-- Localization libraries (en/fr) are here => '../../../.././config/i18n/en.ts|fr.ts' -->
 		</ng-container>
 
 		<ng-container ktPortletTools>
-			<button (click)="addCustomer()" mat-raised-button matTooltip="Create new customer" color="primary" type="button">
-				<span translate="ECOMMERCE.CUSTOMERS.NEW_CUSTOMER">New Customer</span>
+			<button (click)="addSolution()" mat-raised-button matTooltip="Create new solution" color="primary" type="button">
+				<span translate="ECOMMERCE.CUSTOMERS.NEW_CUSTOMER">New Solution</span>
 			</button>
 			<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
 			<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
@@ -29,41 +29,8 @@
 				<div class="row align-items-center">
 
 					<div class="col-md-2 kt-margin-bottom-10-mobile">
-						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
-						<div class="kt-form__control">
-							<mat-form-field class="mat-form-field-fluid">
-								<mat-select [(value)]="filterStatus" (selectionChange)="loadCustomersList()">
-									<mat-option value="">All</mat-option>
-									<mat-option value="0">Suspended</mat-option>
-									<mat-option value="1">Active</mat-option>
-									<mat-option value="Pending">Pending</mat-option>
-								</mat-select>
-								<mat-hint align="start">
-									<strong>Filter</strong> by Status
-								</mat-hint>
-							</mat-form-field>
-						</div>
-					</div>
-
-					<div class="col-md-2 kt-margin-bottom-10-mobile">
-
-						<div class="kt-form__control">
-							<mat-form-field class="mat-form-field-fluid">
-								<mat-select [(value)]="filterType" (selectionChange)="loadCustomersList()">
-									<mat-option value="">All</mat-option>
-									<mat-option value="0">Business</mat-option>
-									<mat-option value="1">Individual</mat-option>
-								</mat-select>
-								<mat-hint align="start">
-									<strong>Filter</strong> by Type
-								</mat-hint>
-							</mat-form-field>
-						</div>
-					</div>
-
-					<div class="col-md-2 kt-margin-bottom-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
-							<input matInput placeholder="Search customer" #searchInput placeholder="Search">
+							<input matInput placeholder="Search solution" #searchInput placeholder="Search">
 							<mat-hint align="start">
 								<strong>Search</strong> in all fields
 							</mat-hint>
@@ -91,21 +58,21 @@
 						</div>
 						<div class="kt-form__control kt-form__group--inline">
 							<ng-template ngxPermissionsOnly="canDeleteECommerceData">
-								<button (click)="deleteCustomers()"
+								<button (click)="deleteSolutions()"
 									mat-raised-button
 									color="accent"
-									matTooltip="Delete selected customers" 
+									matTooltip="Delete selected solutions"
 									class="mat-button-mt-4">
 									<mat-icon>delete</mat-icon>
 									Delete All
 								</button>&nbsp;<!-- Call 'delete-entity-dialog' from _shared folder -->
 							</ng-template>
 
-							<button (click)="fetchCustomers()" mat-raised-button matTooltip="Fetch selected customers" class="mat-button-mt-4">
+							<button (click)="fetchSolution()" mat-raised-button matTooltip="Fetch selected solutions" class="mat-button-mt-4">
 								<mat-icon>clear_all</mat-icon>
 								Fetch Selected
 							</button>&nbsp;<!-- Call 'fetch-entity-dialog' from _shared folder -->
-							<button (click)="updateStatusForCustomers()" mat-raised-button matTooltip="Update status for selected customers"  class="mat-button-mt-4">
+							<button (click)="updateStatusForSolutions()" mat-raised-button matTooltip="Update status for selected solutions"  class="mat-button-mt-4">
 								<mat-icon>update</mat-icon>
 								Update status
 							</button><!-- Call 'update-stated-dialog' from _shared folder -->
@@ -149,54 +116,17 @@
 					</mat-cell>
 				</ng-container>
 
-				<ng-container matColumnDef="id">
+				<ng-container matColumnDef="title">
 					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
-					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-					<mat-cell *matCellDef="let customer">{{customer.id}}</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="firstName">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
-					<mat-cell *matCellDef="let customer">{{customer.firstName}}</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="lastName">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
-					<mat-cell *matCellDef="let customer">{{customer.lastName}}</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="email">
-					<mat-header-cell *matHeaderCellDef mat-sort-header class="email-cell">Email</mat-header-cell>
-					<mat-cell *matCellDef="let customer" class="email-cell">
-						<a href="ecommerce/customers#" class="kt-link">{{customer.email}}</a>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="gender">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
-					<mat-cell *matCellDef="let customer">{{customer.gender}}</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="status">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-					<mat-cell *matCellDef="let customer">
-						<span class="kt-badge kt-badge--inline kt-badge--pill kt-badge--{{ getItemCssClassByStatus(customer.status) }} kt-badge--wide">{{  getItemStatusString(customer.status) }}</span>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="type">
-					<mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-					<mat-cell *matCellDef="let customer">
-						<span class="kt-badge kt-badge--{{ getItemCssClassByType(customer.type) }} kt-badge--dot"></span>&nbsp;
-						<span class="kt--font-bold kt-font-{{ getItemCssClassByType(customer.type) }}">{{ getItemTypeString(customer.type) }}</span>
-					</mat-cell>
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+					<mat-cell *matCellDef="let solution">{{solution.title}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="actions">
 					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-					<mat-cell *matCellDef="let customer">
+					<mat-cell *matCellDef="let solution">
 						<ng-template ngxPermissionsOnly="canEditECommerceData">
-							<button mat-icon-button color="primary" matTooltip="Edit customer" (click)="editCustomer(customer)">
+							<button mat-icon-button color="primary" matTooltip="Edit solution" (click)="editSolutions(solution)">
 								<mat-icon>create</mat-icon>
 							</button>&nbsp;
 						</ng-template>
@@ -204,27 +134,12 @@
 						<ng-template ngxPermissionsOnly="canDeleteECommerceData">
 							<button mat-icon-button
 								color="warn"
-								matTooltip="Delete customer"
+								matTooltip="Delete solution"
 								type="button"
-								(click)="deleteCustomer(customer)">
+								(click)="deleteSolution(solution)">
 								<mat-icon>delete</mat-icon>
 							</button>&nbsp;
 						</ng-template>
-
-						<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="More actions">
-							<mat-icon>more_vert</mat-icon>
-						</button>
-						<mat-menu #menu="matMenu">
-							<button mat-menu-item>
-								<mat-icon>dialpad</mat-icon>
-								<span>Redial</span></button>
-							<button mat-menu-item disabled>
-								<mat-icon>voicemail</mat-icon>
-								<span>Check voicemail</span></button>
-							<button mat-menu-item>
-								<mat-icon>notifications_off</mat-icon>
-								<span>Disable alerts</span></button>
-						</mat-menu>
 					</mat-cell>
 				</ng-container>
 
